@@ -1,0 +1,6 @@
+body {
+  background-color: rgb(251, 251, 251);
+}
+.main-body {
+  min-height: calc(100vh - 175px);
+}
