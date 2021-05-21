@@ -10,17 +10,16 @@ function DiseaseInput() {
     values: [],
     disease: null,
   });
+  const [responseError, setResponseError] = useState("");
   const animatedComponents = makeAnimated();
   let handleChange = (e) => {
-    // console.log(e.length);
     let values = [];
     for (let i = 0; i < e.length; i++) {
       values.push(e[i].value);
     }
     setState({
+      ...state,
       values: values,
-      //   disease: state.disease,
-      //   message: state.message,
     });
   };
   let handlesubmit = (e) => {
@@ -29,19 +28,33 @@ function DiseaseInput() {
       return;
     }
     let data = { data: state.values };
-    // axios.post("https://www.domain.com/", data).then((response) =>
-    //   setState({
-    //     values: [],
-    //     disease: response.data.disease,
-    //     message: response.data.message,
-    //   })
-    // );
-    setState({
-      values: [],
-      disease: " response.data.disease",
-      message: "response.data.message",
-    });
-    console.log("how " + state.values);
+    setResponseError("");
+    axios({
+      method: "post",
+      url: "http://127.0.0.1:8000/api/predict/",
+      data,
+      // headers: {
+      //   Accept: "application/json",
+      //   "Content-Type": "application/json",
+      // },
+    })
+      .then(function (response) {
+        if (response.status === 200) {
+          console.log(response.data);
+          setState({
+            ...state,
+            disease: response.data.disease,
+            message: response.data.message,
+          });
+        }
+      })
+      .catch(function (error) {
+        if (error.response) {
+          setResponseError(error.response.data.detail);
+        } else {
+          setResponseError("Something went wrong! Please try again.");
+        }
+      });
   };
   const options = [
     { value: "chocolate", label: "Chocolate" },
@@ -70,7 +83,14 @@ function DiseaseInput() {
               {state.values.length > 3 ? null : (
                 <p className="text-warning">*Select atleast 4 symptoms</p>
               )}
-              <PredictDisease disease={state.disease} message={state.message} />
+              {responseError ? (
+                <p className="text-center text-danger">{responseError}</p>
+              ) : (
+                <PredictDisease
+                  disease={state.disease}
+                  message={state.message}
+                />
+              )}
               <Button className="py-3 my-3" type="submit">
                 Predict Disease
               </Button>
