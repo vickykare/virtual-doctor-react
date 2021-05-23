@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import { Link, useHistory } from "react-router-dom";
-function Register() {
-  const history = useHistory();
+import { loginContext } from "../../App";
 
+function Register() {
+  const { loggedIn, setLoggedIn } = useContext(loginContext);
+  const history = useHistory();
+  if (loggedIn) {
+    history.push("/");
+  }
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
@@ -83,6 +88,7 @@ function Register() {
               if (response.status === 200) {
                 // console.log(response);
                 localStorage.setItem("userData", JSON.stringify(response.data));
+                setLoggedIn(true);
                 let udata = JSON.parse(localStorage.getItem("userData"));
                 console.log(udata.refresh);
                 history.push("/");

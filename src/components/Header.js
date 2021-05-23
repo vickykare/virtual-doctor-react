@@ -2,8 +2,10 @@ import React, { useContext } from "react";
 import { Container, Navbar, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { loginContext } from "../App";
+import Logout from "./account/Logout";
 function Header() {
-  const loggedIn = useContext(loginContext);
+  const { loggedIn, setLoggedIn } = useContext(loginContext);
+
   return (
     <>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -20,6 +22,18 @@ function Header() {
                 <Nav.Link>
                   <Link to="/profile" className="nav-link py-0">
                     Profile
+                  </Link>
+                </Nav.Link>
+                <Nav.Link>
+                  <Link
+                    to="/"
+                    className="nav-link py-0"
+                    onClick={() => {
+                      Logout();
+                      setLoggedIn(false);
+                    }}
+                  >
+                    Logout
                   </Link>
                 </Nav.Link>
                 {/* <Nav.Link eventKey={2}>

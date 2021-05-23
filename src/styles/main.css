@@ -4,3 +4,11 @@ body {
 .main-body {
   min-height: calc(100vh - 175px);
 }
+.not-found {
+  min-height: calc(100vh - 200px);
+  padding-top: calc(100vh - 300px);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("../images/notfound.svg");
+}

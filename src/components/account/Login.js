@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
+import { loginContext } from "../../App";
 
 function Login() {
   const history = useHistory();
+  const { loggedIn, setLoggedIn } = useContext(loginContext);
+
+  if (loggedIn) {
+    history.push("/");
+  }
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [responseError, setResponseError] = useState("");
+
   let handleUsername = (event) => {
     setUsername(event.target.value);
   };
@@ -32,8 +39,7 @@ function Login() {
         if (response.status === 200) {
           // console.log(response);
           localStorage.setItem("userData", JSON.stringify(response.data));
-          let udata = JSON.parse(localStorage.getItem("userData"));
-          console.log(udata.refresh);
+          setLoggedIn(true);
           history.push("/");
         }
       })
@@ -76,12 +82,15 @@ function Login() {
             </Form.Group>
             {error && <p className="text-danger">{error}</p>}
             {responseError && <p className="text-danger">{responseError}</p>}
-            <p>
-              Don't have an account? <Link to="/register">Signup here</Link>
-            </p>
+            {/* <p>
+              <Link to="/reset-password">Forgot password?</Link>
+            </p> */}
             <Button variant="primary" type="submit" className="">
               Login
             </Button>
+            <p>
+              Don't have an account? <Link to="/register">Signup here</Link>
+            </p>
           </Form>
         </Col>
       </Row>
