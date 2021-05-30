@@ -54,19 +54,6 @@ function Register() {
       setError("Passwords not matching");
       return;
     }
-    // const headers = {
-    //   "Content-Type": "application/json",
-    //   Authorization: "application/json",
-    // };
-    // let data = {
-    //   first_name: firstName,
-    //   last_name: lastName,
-    //   email: email,
-    //   username: username,
-    //   password: password,
-    //   password2: password2,
-    // };
-    // console.log(data);
     axios
       .post("http://127.0.0.1:8000/api/account/register/", {
         first_name: firstName,
@@ -89,8 +76,8 @@ function Register() {
                 // console.log(response);
                 localStorage.setItem("userData", JSON.stringify(response.data));
                 setLoggedIn(true);
-                let udata = JSON.parse(localStorage.getItem("userData"));
-                console.log(udata.refresh);
+                // let udata = JSON.parse(localStorage.getItem("userData"));
+                // console.log(udata.refresh);
                 history.push("/");
               }
             })

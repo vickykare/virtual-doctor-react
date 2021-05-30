@@ -41,7 +41,7 @@ function DiseaseInput() {
     })
       .then(function (response) {
         if (response.status === 200) {
-          console.log(response.data);
+          // console.log(response.data);
           setState({
             values: state.values,
             disease: response.data.disease,

@@ -14,7 +14,7 @@ function UpdateProfile() {
   }
   const animatedComponents = makeAnimated();
   const [state, setState] = useState({});
-  const [responseError, setResponseError] = useState(null);
+  const [responseError, setResponseError] = useState({});
   useEffect(() => {
     axios({
       method: "get",
@@ -76,21 +76,7 @@ function UpdateProfile() {
   ];
   const handleSubmit = (e) => {
     e.preventDefault();
-    // const data = {
-    // user: {
-    //   first_name: state.firstName,
-    //   last_name: state.lastName,
-    //   email: state.email,
-    // },
-    // profile: {
-    //   mobile: state.mobile,
-    //   age: state.age,
-    //   bp_problem: state.bpProblem,
-    //   blood_group: state.bloodGroup,
-    //   major_health_problem: state.majorHealthIssue,
-    //   any_operation: state.anyOperation,
-    // },
-    // };
+
     axios({
       method: "put",
       url: "http://127.0.0.1:8000/api/account/profile/update/",
@@ -104,14 +90,24 @@ function UpdateProfile() {
     })
       .then(function (response) {
         if (response.status === 200) {
-          console.log(response.data);
+          // console.log(response.data);
           history.push("/profile");
         }
       })
       .catch(function (error) {
         console.log(error.response.data);
         if (error.response) {
-          setResponseError(error.response.data.detail);
+          setResponseError({
+            first_name: error.response.data.first_name,
+            last_name: error.response.data.last_name,
+            email: error.response.data.email,
+            age: error.response.data.age,
+            blood_group: error.response.data.blood_group,
+            bp_problem: error.response.data.bp_problem,
+            major_health_problem: error.response.data.major_health_problem,
+            any_operation: error.response.data.any_operation,
+            city: error.response.data.city,
+          });
         } else {
           setResponseError("Something went wrong! Please try again.");
         }
@@ -138,6 +134,9 @@ function UpdateProfile() {
                     }
                   />
                 </Form.Group>
+                {responseError.first_name && (
+                  <p className="text-danger">{responseError.first_name}</p>
+                )}
               </Col>
               <Col md={6}>
                 <Form.Group controlId="formBasicEmail" className="pb-3" md={6}>
@@ -152,6 +151,9 @@ function UpdateProfile() {
                     }
                   />
                 </Form.Group>
+                {responseError.last_name && (
+                  <p className="text-danger">{responseError.last_name}</p>
+                )}
               </Col>
               <Col md={6}>
                 <Form.Group controlId="formBasicEmail" className="pb-3">
@@ -168,6 +170,9 @@ function UpdateProfile() {
                   <Form.Text className="text-muted">
                     We'll never share your email with anyone else.
                   </Form.Text>
+                  {responseError.email && (
+                    <p className="text-danger">{responseError.email}</p>
+                  )}
                 </Form.Group>
               </Col>
 
@@ -184,6 +189,9 @@ function UpdateProfile() {
                     }
                   />
                 </Form.Group>
+                {responseError.mobile && (
+                  <p className="text-danger">{responseError.mobile}</p>
+                )}
               </Col>
               <Col md={6}>
                 {/* age */}
@@ -194,12 +202,15 @@ function UpdateProfile() {
                     name="age"
                     options={ageOptions}
                     classNamePrefix="select"
-                    value={bloodGroupOptions.filter(
+                    value={ageOptions.filter(
                       (option) => option.value === state.age
                     )}
                     onChange={(e) => setState({ ...state, age: e.value })}
                   />
                 </Form.Group>
+                {responseError.age && (
+                  <p className="text-danger">{responseError.age}</p>
+                )}
               </Col>
               <Col md={6}>
                 {/* blood type */}
@@ -218,6 +229,9 @@ function UpdateProfile() {
                     }
                   />
                 </Form.Group>
+                {responseError.blood_group && (
+                  <p className="text-danger">{responseError.blood_group}</p>
+                )}
               </Col>
               <Col md={6}>
                 {/* bp problem */}
@@ -239,6 +253,9 @@ function UpdateProfile() {
                     }
                   />
                 </Form.Group>
+                {responseError.bp_problem && (
+                  <p className="text-danger">{responseError.bp_problem}</p>
+                )}
               </Col>
               <Col md={6}>
                 {/* major health problem */}
@@ -260,6 +277,11 @@ function UpdateProfile() {
                     }
                   />
                 </Form.Group>
+                {responseError.major_health_problem && (
+                  <p className="text-danger">
+                    {responseError.major_health_problem}
+                  </p>
+                )}
               </Col>
               <Col md={6}>
                 <Form.Group controlId="formBasicPassword" className="pb-3">
@@ -280,6 +302,9 @@ function UpdateProfile() {
                     }
                   />
                 </Form.Group>
+                {responseError.any_operation && (
+                  <p className="text-danger">{responseError.any_operation}</p>
+                )}
               </Col>
               <Col md={6}>
                 <Form.Group controlId="formBasicCity" className="pb-3">
@@ -289,6 +314,12 @@ function UpdateProfile() {
                     name="city"
                     placeholder="City"
                     value={state.city}
+                    onChange={(e) =>
+                      setState({
+                        ...state,
+                        city: e.target.value,
+                      })
+                    }
                   />
                 </Form.Group>
               </Col>

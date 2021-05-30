@@ -13,6 +13,7 @@ import IsLoggedIn from "./components/account/IsLoggedIn";
 import History from "./components/account/History";
 import ResetPassword from "./components/account/ResetPassword";
 import NotFound404 from "./components/NotFound404";
+import Corona from "./components/diseases/Corona";
 
 export const loginContext = createContext({
   loggedIn: false,
@@ -39,6 +40,7 @@ function App() {
                 <Route path="/update-profile" component={UpdateProfile} />
                 <Route path="/reset-password" component={ResetPassword} />
                 <Route path="/history" component={History} />
+                <Route path="/predict/corona" component={Corona} />
                 <Route path="*" exact={true} component={NotFound404} />
               </Switch>
             </Container>

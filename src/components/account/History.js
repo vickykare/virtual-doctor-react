@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import axios from "axios";
+import moment from "moment";
 function History() {
-  const [state, setState] = useState({});
-  const [responseError, setResponseError] = useState({});
+  const [state, setState] = useState([]);
+  const [responseError, setResponseError] = useState(null);
   useEffect(() => {
     axios({
       method: "get",
@@ -17,7 +18,7 @@ function History() {
     })
       .then(function (response) {
         if (response.status === 200) {
-          console.log(response.data.length);
+          console.log(response.data);
           setState(response.data);
         }
       })
@@ -37,12 +38,19 @@ function History() {
           <Card.Body>No user History of diseases found !</Card.Body>
         </Card>
       ) : (
-        state.map(({ description, remark }) => (
+        state.map(({ disease, prescription, created }) => (
           <Card className="m-2">
-            <Card.Body>{description}</Card.Body>
+            <Card.Body>
+              <p>{disease}</p>
+              {prescription}
+              {/* <p className="blockquote-footer text-end pt-3">
+                {moment({ created }).startOf("day").fromNow()}
+              </p> */}
+            </Card.Body>
           </Card>
         ))
       )}
+      {responseError && <p className="text-danger">{responseError}</p>}
     </>
   );
 }

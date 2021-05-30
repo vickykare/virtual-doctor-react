@@ -58,7 +58,7 @@ function Profile() {
             <h3 className="text-center py-3">User Profile</h3>
             <div className="d-flex justify-content-between">
               <Link to="/update-profile">Update Profile</Link>
-              {/* <Link to="/history">History</Link> */}
+              <Link to="/history">History</Link>
             </div>
             <hr />
             <Row>
