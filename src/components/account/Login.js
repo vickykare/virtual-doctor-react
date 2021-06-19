@@ -58,7 +58,7 @@ function Login() {
           <h1>Login</h1>
           <Form onSubmit={handleLogin}>
             <Form.Group controlId="formBasicUsername" className="py-3">
-              <Form.Label>Email address</Form.Label>
+              <Form.Label>Username</Form.Label>
               <Form.Control
                 type="text"
                 name="username"
@@ -66,9 +66,6 @@ function Login() {
                 value={username}
                 onChange={handleUsername}
               />
-              <Form.Text className="text-muted">
-                We'll never share your email with anyone else.
-              </Form.Text>
             </Form.Group>
             <Form.Group controlId="formBasicPassword" className="pb-3">
               <Form.Label>Password</Form.Label>
