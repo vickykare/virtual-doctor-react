@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import axios from "axios";
+import Loading from "../Loading";
+
 function Corona() {
   const [state, setState] = useState({});
   const [responseError, setResponseError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const checkForCorona = (e) => {
     e.preventDefault();
     if (
@@ -17,6 +20,7 @@ function Corona() {
       return;
     }
     setResponseError(null);
+    setIsLoading(() => true);
     console.log(state);
     axios({
       method: "post",
@@ -36,13 +40,14 @@ function Corona() {
             ...state,
             probability: response.data.probability,
           });
+          setIsLoading(() => false);
         }
       })
       .catch(function (error) {
         if (error.response) {
-          setResponseError(error.response.data.detail);
-        } else {
+          console.log(error.response.data.detail);
           setResponseError("Something went wrong! Please try again.");
+          setIsLoading(() => false);
         }
       });
   };
@@ -137,7 +142,8 @@ function Corona() {
       <p className="text-center text-danger">{responseError}</p>
       <hr />
       <Row>
-        {state.probability && (
+        {isLoading ? <Loading /> : null}
+        {state.probability >= 0 && (
           <p className="text-center ">
             The risk of having corona is
             <h3> {state.probability} %</h3>

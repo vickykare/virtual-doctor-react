@@ -6,6 +6,7 @@ import PredictDisease from "./PredictDisease";
 import axios from "axios";
 import Disease from "./diseases/Disease";
 import { loginContext } from "../App";
+import Loading from "./Loading";
 
 function DiseaseInput() {
   const { loggedIn, setLoggedIn } = useContext(loginContext);
@@ -14,7 +15,9 @@ function DiseaseInput() {
     disease: null,
   });
   const [responseError, setResponseError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const animatedComponents = makeAnimated();
+
   let handleChange = (e) => {
     let values = [];
     for (let i = 0; i < e.length; i++) {
@@ -25,11 +28,19 @@ function DiseaseInput() {
       values: values,
     });
   };
+
   let handlesubmit = (e) => {
     e.preventDefault();
     if (state.values.length < 4) {
       return;
     }
+    console.log(state.values);
+    setIsLoading(() => true);
+    setState({
+      ...state,
+      disease: null,
+      message: null,
+    });
     let data = { data: state.values };
     setResponseError("");
     let headers = {};
@@ -60,16 +71,19 @@ function DiseaseInput() {
             disease: response.data.disease,
             message: response.data.message,
           });
+          setIsLoading(() => false);
         }
       })
       .catch(function (error) {
         if (error.response) {
-          setResponseError(error.response.data.detail);
-        } else {
+          console.log(error.response.data.detail);
+
           setResponseError("Something went wrong! Please try again.");
+          setIsLoading(() => false);
         }
       });
   };
+
   const options = [
     { value: "abdominal_pain", label: "abdominal pain" },
     { value: "bladder_discomfort", label: "bladder discomfort" },
@@ -105,6 +119,7 @@ function DiseaseInput() {
     { value: "yellowing_of_eyes", label: "yellowing of eyes" },
     { value: "yellowish_skin", label: "yellowish skin" },
   ];
+
   return (
     <>
       <Container>
@@ -131,6 +146,7 @@ function DiseaseInput() {
                   message={state.message}
                 />
               )}
+              {isLoading ? <Loading /> : null}
               <Button className="my-3" type="submit">
                 Predict Disease
               </Button>
